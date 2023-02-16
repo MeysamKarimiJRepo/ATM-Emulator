@@ -7,8 +7,7 @@ public class CardMapper implements Mapper<Card, CardDTO> {
 
     @Override
     public CardDTO mapEntityToDTO(Card card) {
-        CardDTO cardDTO = new CardDTO(card.getPin(), card.getPreferredAuthentication(), card.getAccount().getBalance(), card.getAccount().getOwner().getFirstName() + "" + card.getAccount().getOwner().getLastName());
-        return cardDTO;
+        return new CardDTO(card.getPin(), card.getPreferredAuthentication(), card.getAccount().getBalance(), card.getAccount().getOwner().getFirstName() + "" + card.getAccount().getOwner().getLastName());
     }
 
     @Override
