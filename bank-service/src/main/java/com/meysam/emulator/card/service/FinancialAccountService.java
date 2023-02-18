@@ -67,12 +67,12 @@ public class FinancialAccountService {
 
     private void addTransactionToAccountTransactions(FinancialAccount financialAccount, CardTransaction cardTransaction) {
         //todo load accountTransactionsList
-        if (financialAccount.getTransactions() != null && !financialAccount.getTransactions().isEmpty()) {
-            financialAccount.getTransactions().add(cardTransaction);
+        if (financialAccount.getCardTransactions() != null && !financialAccount.getCardTransactions().isEmpty()) {
+            financialAccount.getCardTransactions().add(cardTransaction);
         } else {
             Set<CardTransaction> cardTransactions = new HashSet<>();
             cardTransactions.add(cardTransaction);
-            financialAccount.setTransactions(cardTransactions);
+            financialAccount.setCardTransactions(cardTransactions);
         }
     }
 
