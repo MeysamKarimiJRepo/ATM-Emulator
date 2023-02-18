@@ -19,7 +19,7 @@ public class ControllerTests {
 
     @Test
     public void cashDeposit_validAmount() throws CashWithdrawFailureException {
-        DepositRequest depositRequest = new DepositRequest(new BigDecimal(1000), "546554");
+        DepositRequest depositRequest = new DepositRequest(new BigDecimal(1000), "5552-5566-2119-5201");
         ResponseEntity<DepositResponse> responseEntity = bankController.cashDeposit(depositRequest);
     }
 }

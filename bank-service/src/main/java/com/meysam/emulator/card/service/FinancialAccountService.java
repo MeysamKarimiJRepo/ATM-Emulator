@@ -2,11 +2,11 @@ package com.meysam.emulator.card.service;
 
 import com.meysam.emulator.card.exception.AccountBusinessException;
 import com.meysam.emulator.card.exception.FinancialAccountServiceException;
-import com.meysam.emulator.card.model.CardTransaction;
+import com.meysam.emulator.card.model.FinancialTransaction;
 import com.meysam.emulator.card.model.FinancialAccount;
 import com.meysam.emulator.card.model.TransactionStatus;
 import com.meysam.emulator.card.model.TransactionType;
-import com.meysam.emulator.card.repository.CardTransactionRepository;
+import com.meysam.emulator.card.repository.FinancialTransactionRepository;
 import com.meysam.emulator.card.repository.FinancialAccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +20,12 @@ public class FinancialAccountService {
 
     private final FinancialAccountRepository financialAccountRepository;
 
-    private final CardTransactionRepository cardTransactionRepository;
+    private final FinancialTransactionRepository financialTransactionRepository;
 
 
-    public FinancialAccountService(FinancialAccountRepository financialAccountRepository, CardTransactionRepository cardTransactionRepository) {
+    public FinancialAccountService(FinancialAccountRepository financialAccountRepository, FinancialTransactionRepository financialTransactionRepository) {
         this.financialAccountRepository = financialAccountRepository;
-        this.cardTransactionRepository = cardTransactionRepository;
+        this.financialTransactionRepository = financialTransactionRepository;
     }
 
 
@@ -39,9 +39,9 @@ public class FinancialAccountService {
             BigDecimal currentBalance = financialAccount.getBalance();
             BigDecimal newBalance = currentBalance.subtract(amount);
             financialAccount.setBalance(newBalance);
-            CardTransaction cardTransaction = addAccountTransactionToAccount(LocalDateTime.now(), amount,
+            FinancialTransaction financialTransaction = addAccountTransactionToAccount(LocalDateTime.now(), amount,
                     TransactionType.WITHDRAW.toString(), TransactionStatus.COMPLETE.toString());
-            addTransactionToAccountTransactions(financialAccount, cardTransaction);
+            addTransactionToAccountTransactions(financialAccount, financialTransaction);
             financialAccountRepository.save(financialAccount);
         } catch (Exception e) {
             throw new FinancialAccountServiceException(e.getMessage());
@@ -56,31 +56,31 @@ public class FinancialAccountService {
             BigDecimal currentBalance = financialAccount.getBalance();
             BigDecimal newBalance = currentBalance.add(amount);
             financialAccount.setBalance(newBalance);
-            CardTransaction cardTransaction = addAccountTransactionToAccount(LocalDateTime.now(), amount,
+            FinancialTransaction financialTransaction = addAccountTransactionToAccount(LocalDateTime.now(), amount,
                     TransactionType.DEPOSIT.toString(), TransactionStatus.COMPLETE.toString());
-            addTransactionToAccountTransactions(financialAccount, cardTransaction);
+            addTransactionToAccountTransactions(financialAccount, financialTransaction);
             financialAccountRepository.save(financialAccount);
         } catch (Exception e) {
             throw new FinancialAccountServiceException(e.getMessage());
         }
     }
 
-    private void addTransactionToAccountTransactions(FinancialAccount financialAccount, CardTransaction cardTransaction) {
+    private void addTransactionToAccountTransactions(FinancialAccount financialAccount, FinancialTransaction financialTransaction) {
         //todo load accountTransactionsList
         if (financialAccount.getCardTransactions() != null && !financialAccount.getCardTransactions().isEmpty()) {
-            financialAccount.getCardTransactions().add(cardTransaction);
+            financialAccount.getCardTransactions().add(financialTransaction);
         } else {
-            Set<CardTransaction> cardTransactions = new HashSet<>();
-            cardTransactions.add(cardTransaction);
-            financialAccount.setCardTransactions(cardTransactions);
+            Set<FinancialTransaction> financialTransactions = new HashSet<>();
+            financialTransactions.add(financialTransaction);
+            financialAccount.setCardTransactions(financialTransactions);
         }
     }
 
 
-    private CardTransaction addAccountTransactionToAccount(LocalDateTime date, BigDecimal amount, String type, String status) {
-        CardTransaction cardTransaction = new CardTransaction(date, amount, type, status);
-        cardTransactionRepository.save(cardTransaction);
-        return cardTransaction;
+    private FinancialTransaction addAccountTransactionToAccount(LocalDateTime date, BigDecimal amount, String type, String status) {
+        FinancialTransaction financialTransaction = new FinancialTransaction(date, amount, type, status);
+        financialTransactionRepository.save(financialTransaction);
+        return financialTransaction;
     }
 
     private void validateAccount(FinancialAccount financialAccount) throws AccountBusinessException {

@@ -39,15 +39,15 @@ public class FinancialAccount implements Serializable {
     @JoinColumn(name = "personId")
     private Customer owner;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<CardTransaction> cardTransactions;
+    private Set<FinancialTransaction> financialTransactions;
 
 
-    public Set<CardTransaction> getCardTransactions() {
-        return cardTransactions;
+    public Set<FinancialTransaction> getCardTransactions() {
+        return financialTransactions;
     }
 
-    public void setCardTransactions(Set<CardTransaction> cardTransactions) {
-        this.cardTransactions = cardTransactions;
+    public void setCardTransactions(Set<FinancialTransaction> financialTransactions) {
+        this.financialTransactions = financialTransactions;
     }
 
     public Long getId() {

@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "card_transaction")
-public class CardTransaction implements Serializable {
+@Table(name = "financial_transaction")
+public class FinancialTransaction implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
@@ -36,10 +36,10 @@ public class CardTransaction implements Serializable {
     @Column(name = "status")
     private String status;
 
-    public CardTransaction() {
+    public FinancialTransaction() {
     }
 
-    public CardTransaction(LocalDateTime date, BigDecimal amount, String type, String status) {
+    public FinancialTransaction(LocalDateTime date, BigDecimal amount, String type, String status) {
         this.date = date;
         this.amount = amount;
         this.type = type;
