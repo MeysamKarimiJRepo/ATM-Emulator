@@ -22,7 +22,7 @@ public class Customer implements Serializable {
             generator = "customer_sequence"
     )
     @Column(name = "id", updatable = false)
-    private int id;
+    private Long id;
     @Column(name = "firstName", nullable = false)
     private String firstName;
     @Column(name = "lastName")
@@ -36,11 +36,11 @@ public class Customer implements Serializable {
     @Column(name = "fingerPrint")
     private String fingerPrint;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

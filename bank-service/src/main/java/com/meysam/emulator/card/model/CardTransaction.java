@@ -23,7 +23,7 @@ public class CardTransaction implements Serializable {
             generator = "card_transaction_sequence"
     )
     @Column(name = "id", updatable = false)
-    private int id;
+    private Long id;
     @Column(name = "date")
 
     private LocalDateTime date;
@@ -46,11 +46,11 @@ public class CardTransaction implements Serializable {
         this.status = status;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

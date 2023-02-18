@@ -23,7 +23,7 @@ public class Card implements Serializable {
             generator = "card_sequence"
     )
     @Column(name = "id", updatable = false)
-    private int id;
+    private Long id;
     @Column(nullable = false)
     private String pan;
     @Column(nullable = false)
@@ -37,11 +37,11 @@ public class Card implements Serializable {
     public Card() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

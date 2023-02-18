@@ -24,7 +24,7 @@ public class FinancialAccount implements Serializable {
             generator = "financial_account_sequence"
     )
     @Column(name = "id", updatable = false)
-    private int id;
+    private Long id;
     @Column(name = "balance")
     private BigDecimal balance;
     @Column(name = "account_number", unique = true)
@@ -41,11 +41,20 @@ public class FinancialAccount implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CardTransaction> cardTransactions;
 
-    public int getId() {
+
+    public Set<CardTransaction> getCardTransactions() {
+        return cardTransactions;
+    }
+
+    public void setCardTransactions(Set<CardTransaction> cardTransactions) {
+        this.cardTransactions = cardTransactions;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -89,11 +98,4 @@ public class FinancialAccount implements Serializable {
         this.owner = owner;
     }
 
-    public Set<CardTransaction> getTransactions() {
-        return cardTransactions;
-    }
-
-    public void setTransactions(Set<CardTransaction> cardTransactions) {
-        this.cardTransactions = cardTransactions;
-    }
 }
