@@ -26,8 +26,9 @@ public class Card implements Serializable {
     private Long id;
     @Column(nullable = false, unique = true)
     private String pan;
-    @Column(nullable = false)
+    @Column(name="pin", nullable = false)
     private String pin;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "accountId")
     private FinancialAccount financialAccount;

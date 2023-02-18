@@ -4,12 +4,12 @@ import com.meysam.emulator.card.dto.CardDTO;
 import com.meysam.emulator.card.dto.DepositResponse;
 import com.meysam.emulator.card.dto.WithdrawResponse;
 import com.meysam.emulator.card.exception.AccountBusinessException;
-import com.meysam.emulator.card.exception.CardAuthenticationFailureException;
 import com.meysam.emulator.card.exception.CashWithdrawFailureException;
 import com.meysam.emulator.card.exception.FinancialAccountServiceException;
 import com.meysam.emulator.card.model.AuthenticationMethod;
 import com.meysam.emulator.card.model.Card;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,6 +23,9 @@ public class BankService {
     @Autowired
     private CardService cardService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     public BankService(FinancialAccountService financialAccountService, CardService cardService) {
         this.financialAccountService = financialAccountService;
         this.cardService = cardService;
@@ -34,7 +37,7 @@ public class BankService {
             throw new CashWithdrawFailureException("card with pin=" + pan + "not found Exception");
         }
 
-        if (amount.compareTo(BigDecimal.ZERO) == -1) {
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new CashWithdrawFailureException("amount must be greater than zero");
         }
 
@@ -53,7 +56,7 @@ public class BankService {
                 throw new CashWithdrawFailureException("card with pin=" + pin + "not found Exception");
             }
 
-            if (amount.compareTo(BigDecimal.ZERO) == -1) {
+            if (amount.compareTo(BigDecimal.ZERO) < 0) {
                 throw new CashWithdrawFailureException("amount must be greater than zero");
             }
 
@@ -66,7 +69,7 @@ public class BankService {
 
     }
 
-    public BigDecimal checkBalance(String pan) throws CashWithdrawFailureException {
+    public BigDecimal checkBalance(String pan) {
         Card card = cardService.findCardByPan(pan);
         if (card == null) {
             return null;
@@ -74,38 +77,29 @@ public class BankService {
         return card.getAccount().getBalance();
     }
 
-    public boolean authenticateWithPin(String pan, String pin) throws CashWithdrawFailureException, CardAuthenticationFailureException {
+    public boolean authenticateWithPin(String pan, String pin) {
         Card card = cardService.findCardByPan(pan);
         if (card == null) {
             return false;
         }
-        //todo check the hash value of password
-        if (AuthenticationMethod.PIN.toString().equals(card.getPreferredAuthentication()) && card.getPin().equals(pin)) {
-            return true;
-        }
 
-        return false;
+        return AuthenticationMethod.PIN.toString().equals(card.getPreferredAuthentication()) && passwordEncoder.matches(pin, card.getPin());
     }
 
-    public boolean authenticateWithFingerPrint(String pan, String fingerPrint) throws CashWithdrawFailureException {
+    public boolean authenticateWithFingerPrint(String pan, String fingerPrint) {
         Card card = cardService.findCardByPan(pan);
         if (card == null) {
             return false;
         }
 
-        if (AuthenticationMethod.FINGERPRINT.toString().equals(card.getPreferredAuthentication()) &&
-                card.getAccount().getOwner().getFingerPrint().equals(fingerPrint)) {
-            return true;
-        }
-
-        return false;
+        return AuthenticationMethod.FINGERPRINT.toString().equals(card.getPreferredAuthentication()) &&
+                card.getAccount().getOwner().getFingerPrint().equals(fingerPrint);
     }
 
     public CardDTO checkCardNumber(String pan) {
         Card card = cardService.findCardByPan(pan);
         CardMapper cardMapper = new CardMapper();
-        CardDTO cardDTO = cardMapper.mapEntityToDTO(card);
-        return cardDTO;
+        return cardMapper.mapEntityToDTO(card);
     }
 
 }
