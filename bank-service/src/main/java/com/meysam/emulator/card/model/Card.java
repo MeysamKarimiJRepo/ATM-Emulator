@@ -24,7 +24,7 @@ public class Card implements Serializable {
     )
     @Column(name = "id", updatable = false)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String pan;
     @Column(nullable = false)
     private String pin;
