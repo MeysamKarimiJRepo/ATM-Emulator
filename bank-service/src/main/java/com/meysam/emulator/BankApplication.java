@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @OpenAPIDefinition
-public class FullSecurityApplication {
+public class BankApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FullSecurityApplication.class, args);
+		SpringApplication.run(BankApplication.class, args);
 	}
 }
