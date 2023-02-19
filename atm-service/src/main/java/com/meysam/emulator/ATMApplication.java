@@ -9,10 +9,10 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @OpenAPIDefinition
-public class FullSecurityApplication {
+public class ATMApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FullSecurityApplication.class, args);
+		SpringApplication.run(ATMApplication.class, args);
 	}
 
 	@Bean
