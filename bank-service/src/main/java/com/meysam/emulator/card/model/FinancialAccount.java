@@ -11,7 +11,6 @@ import java.util.Set;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "financial_account")
 public class FinancialAccount implements Serializable {
     @Id
     @SequenceGenerator(
@@ -35,11 +34,14 @@ public class FinancialAccount implements Serializable {
 
     @Column(name = "modification_date")
     private Date modificationDate;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "personId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
     private Customer owner;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "financialAccount", orphanRemoval = true)
     private Set<FinancialTransaction> financialTransactions;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "financialAccount", orphanRemoval = true)
+    private Set<Card> cards;
 
 
     public Set<FinancialTransaction> getCardTransactions() {

@@ -9,18 +9,17 @@ import java.time.LocalDateTime;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "financial_transaction")
 public class FinancialTransaction implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
-            name = "card_transaction_sequence",
-            sequenceName = "card_transaction_sequence",
+            name = "financial_transaction_sequence",
+            sequenceName = "financial_transaction_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = SEQUENCE,
-            generator = "card_transaction_sequence"
+            generator = "financial_transaction_sequence"
     )
     @Column(name = "id", updatable = false)
     private Long id;
@@ -35,6 +34,10 @@ public class FinancialTransaction implements Serializable {
     private String type;
     @Column(name = "status")
     private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "financialAccount_id")
+    private FinancialAccount financialAccount;
 
     public FinancialTransaction() {
     }
@@ -84,5 +87,13 @@ public class FinancialTransaction implements Serializable {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public FinancialAccount getFinancialAccount() {
+        return financialAccount;
+    }
+
+    public void setFinancialAccount(FinancialAccount financialAccount) {
+        this.financialAccount = financialAccount;
     }
 }

@@ -3,11 +3,11 @@ package com.meysam.emulator.card.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "customer")
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,6 +35,9 @@ public class Customer implements Serializable {
     private String nationalCode;
     @Column(name = "fingerPrint")
     private String fingerPrint;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "owner", orphanRemoval = true)
+    private Set<FinancialAccount> financialAccounts;
 
     public Long getId() {
         return id;

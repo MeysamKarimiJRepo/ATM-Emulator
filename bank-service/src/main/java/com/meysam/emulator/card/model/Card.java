@@ -8,7 +8,6 @@ import java.io.Serializable;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "card")
 public class Card implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,8 +28,8 @@ public class Card implements Serializable {
     @Column(name="pin", nullable = false)
     private String pin;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "accountId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "financialAccount_id")
     private FinancialAccount financialAccount;
     @Column(nullable = false)
     private String preferredAuthentication;
